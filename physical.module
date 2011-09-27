@@ -19,6 +19,8 @@ function physical_field_info() {
       'instance_settings' => array(),
       'default_widget' => 'physical_weight_textfield',
       'default_formatter' => 'physical_weight_formatted',
+      'property_type' => 'physical_weight',
+      'property_callbacks' => array('physical_weight_property_info_callback'),
     ),
     'physical_dimensions' => array(
       'label' => t('Physical dimensions'),
@@ -27,6 +29,8 @@ function physical_field_info() {
       'instance_settings' => array(),
       'default_widget' => 'physical_dimensions_textfields',
       'default_formatter' => 'physical_dimensions_formatted',
+      'property_type' => 'physical_dimensions',
+      'property_callbacks' => array('physical_dimensions_property_info_callback'),
     ),
   );
 }
@@ -574,6 +578,55 @@ function physical_weight_convert($weight, $unit) {
 }
 
 /**
+ * Callback to alter the property info of weight fields.
+ *
+ * @see physical_field_info().
+ */
+function physical_weight_property_info_callback(&$info, $entity_type, $field, $instance, $field_type) {
+  $name = $field['field_name'];
+  $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$name];
+
+  $property['type'] = ($field['cardinality'] != 1) ? 'list<physical_weight>' : 'physical_weight';
+  $property['getter callback'] = 'entity_metadata_field_verbatim_get';
+  $property['setter callback'] = 'entity_metadata_field_verbatim_set';
+  $property['auto creation'] = 'physical_weight_field_data_auto_creation';
+  $property['property info'] = physical_weight_field_data_property_info();
+
+  unset($property['query callback']);
+}
+
+/**
+ * Returns the default array structure for a Weight field for use when creating
+ * new data arrays through an entity metadata wrapper.
+ */
+function physical_weight_field_data_auto_creation() {
+  return array('weight' => 0, 'unit' => 'lb');
+}
+
+/**
+ * Defines info for the properties of the Weight field data structure.
+ */
+function physical_weight_field_data_property_info($name = NULL) {
+  return array(
+    'weight' => array(
+      'label' => t('Weight'),
+      'description' => !empty($name) ? t('Weight value of field %name', array('%name' => $name)) : '',
+      'type' => 'decimal',
+      'getter callback' => 'entity_property_verbatim_get',
+      'setter callback' => 'entity_property_verbatim_set',
+    ),
+    'unit' => array(
+      'label' => t('Unit of measurement'),
+      'description' => !empty($name) ? t('Unit of measurement of field %name', array('%name' => $name)) : '',
+      'type' => 'text',
+      'getter callback' => 'entity_property_verbatim_get',
+      'setter callback' => 'entity_property_verbatim_set',
+      'options list' => 'physical_weight_unit_options',
+    ),
+  );
+}
+
+/**
  * Returns an associative array of dimensions.
  */
 function physical_dimensions() {
@@ -807,4 +860,67 @@ function physical_dimensions_convert($dimensions, $unit) {
   $dimensions['unit'] = $unit;
 
   return $dimensions;
+}
+
+/**
+ * Callback to alter the property info of Dimensions fields.
+ *
+ * @see physical_field_info().
+ */
+function physical_dimensions_property_info_callback(&$info, $entity_type, $field, $instance, $field_type) {
+  $name = $field['field_name'];
+  $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$name];
+
+  $property['type'] = ($field['cardinality'] != 1) ? 'list<physical_dimensions>' : 'physical_dimensions';
+  $property['getter callback'] = 'entity_metadata_field_verbatim_get';
+  $property['setter callback'] = 'entity_metadata_field_verbatim_set';
+  $property['auto creation'] = 'physical_dimensions_field_data_auto_creation';
+  $property['property info'] = physical_dimensions_field_data_property_info();
+
+  unset($property['query callback']);
+}
+
+/**
+ * Returns the default array structure for a Dimensions field for use when
+ * creating new data arrays through an entity metadata wrapper.
+ */
+function physical_dimensions_field_data_auto_creation() {
+  return array('length' => 0, 'width' => 0, 'height' => 0, 'unit' => 'in');
+}
+
+/**
+ * Defines info for the properties of the Dimensions field data structure.
+ */
+function physical_dimensions_field_data_property_info($name = NULL) {
+  return array(
+    'length' => array(
+      'label' => t('Length'),
+      'description' => !empty($name) ? t('Length value of field %name', array('%name' => $name)) : '',
+      'type' => 'decimal',
+      'getter callback' => 'entity_property_verbatim_get',
+      'setter callback' => 'entity_property_verbatim_set',
+    ),
+    'width' => array(
+      'label' => t('Width'),
+      'description' => !empty($name) ? t('Width value of field %name', array('%name' => $name)) : '',
+      'type' => 'decimal',
+      'getter callback' => 'entity_property_verbatim_get',
+      'setter callback' => 'entity_property_verbatim_set',
+    ),
+    'height' => array(
+      'label' => t('Height'),
+      'description' => !empty($name) ? t('Height value of field %name', array('%name' => $name)) : '',
+      'type' => 'decimal',
+      'getter callback' => 'entity_property_verbatim_get',
+      'setter callback' => 'entity_property_verbatim_set',
+    ),
+    'unit' => array(
+      'label' => t('Unit of measurement'),
+      'description' => !empty($name) ? t('Unit of measurement of field %name', array('%name' => $name)) : '',
+      'type' => 'text',
+      'getter callback' => 'entity_property_verbatim_get',
+      'setter callback' => 'entity_property_verbatim_set',
+      'options list' => 'physical_dimensions_unit_options',
+    ),
+  );
 }
