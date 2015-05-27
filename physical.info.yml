@@ -1,0 +1,5 @@
+name: Physical Fields
+description: Defines fields (e.g. weight and volume) to support describing the physical attributes of entities.
+type: module
+package: Field Types
+core: 8.x
