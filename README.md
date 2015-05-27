@@ -1,4 +1,4 @@
-# Physical Fields
+# Physical Fields [![Build Status](https://travis-ci.org/mglaman/physical.svg)](https://travis-ci.org/mglaman/physical)
 
 The physical fields provides a way to give entities field with measurable values - such as weight and volume.
 
