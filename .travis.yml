@@ -88,5 +88,4 @@ script:
 
   #  Enable once PHPUnit tests are in Commerce
   - cd $TRAVIS_BUILD_DIR/../drupal/core
-  - ./vendor/bin/phpunit --verbose --debug ../modules/physical/; TEST_PHPUNIT=$?; echo $TEST_PHPUNIT
-  - if [ $TEST_EXIT -eq 0 ] && [ $TEST_OUTPUT -eq 0 ] && [ $TEST_PHPUNIT -eq 0 ]; then exit 0; else exit 1; fi
+  - ./vendor/bin/phpunit --verbose --debug ../modules/physical/

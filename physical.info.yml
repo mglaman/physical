@@ -3,3 +3,5 @@ description: Defines fields (e.g. weight and volume) to support describing the p
 type: module
 package: Field Types
 core: 8.x
+dependencies:
+  - field
