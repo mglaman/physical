@@ -25,7 +25,7 @@ class Weight extends Physical {
   public function __construct() {
     $this->addComponent('weight');
 
-    foreach (self::getUnitPlugins('weight') as $unit) {
+    foreach ($this->getUnitPlugins('weight') as $unit) {
       $this->addUnit($unit);
     }
   }

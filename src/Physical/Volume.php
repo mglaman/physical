@@ -25,7 +25,7 @@ class Volume extends Physical {
   public function __construct() {
     $this->addComponent('volume');
 
-    foreach (self::getUnitPlugins('volume') as $unit) {
+    foreach ($this->getUnitPlugins('volume') as $unit) {
       $this->addUnit($unit);
     }
   }

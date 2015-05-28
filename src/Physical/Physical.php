@@ -59,7 +59,7 @@ abstract class Physical implements PhysicalInterface {
    * @return UnitPluginInterface[]
    *    Returns array of unit plugins.
    */
-  public static function getUnitPlugins($type) {
+  public function getUnitPlugins($type) {
     $manager = self::unitPluginManager();
     $units = [];
 
@@ -104,7 +104,12 @@ abstract class Physical implements PhysicalInterface {
    * {@inheritdoc}
    */
   public function getUnit($unit_type) {
-    return $this->getUnits()[$unit_type];
+    if (isset($this->getUnits()[$unit_type])) {
+      return $this->getUnits()[$unit_type];
+    }
+    else {
+      throw new \Exception(sprintf('Unit plugin %s not found.', $unit_type));
+    }
   }
 
   /**

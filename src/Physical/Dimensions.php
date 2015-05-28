@@ -31,7 +31,7 @@ class Dimensions extends Physical {
     $this->addComponent('width');
     $this->addComponent('height');
 
-    foreach (self::getUnitPlugins('dimensions') as $unit) {
+    foreach ($this->getUnitPlugins('dimensions') as $unit) {
       $this->addUnit($unit);
     }
   }

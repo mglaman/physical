@@ -9,27 +9,27 @@ namespace Drupal\physical\Tests\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\physical\Physical\Weight;
-use Drupal\physical\UnitPluginInterface;
 use Drupal\Tests\UnitTestCase;
+use Drupal\physical\Unit;
 
 /**
- * @coversDefaultClass \Drupal\physical\Unit
+ * @coversDefaultClass \Drupal\physical\Physical\Weight
  * @group physical
  */
 class WeightTest extends UnitTestCase {
-  /**
-   * Pounds unit.
-   *
-   * @var UnitPluginInterface
-   */
-  protected $unitLb;
-  /**
-   * Ounces unit.
-   *
-   * @var UnitPluginInterface
-   */
-  protected $unitOz;
 
+  /**
+   * The mock unit plugin manager.
+   *
+   * @var \Drupal\physical\UnitManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+   */
+  protected $unitPluginManager;
+
+  /**
+   * Weight physical object.
+   *
+   * @var Weight
+   */
   protected $weight;
 
   /**
@@ -40,49 +40,72 @@ class WeightTest extends UnitTestCase {
   protected function setUp() {
     parent::setUp();
 
-    $definitions = [];
-    $unit_plugin_manager = $this->getMock('\Drupal\physical\UnitManagerInterface');
-    $unit_plugin_manager->expects($this->any())
-      ->method('getDefinitions')
-      ->willReturn($definitions);
+    $definitions = [
+      'pounds' => [
+        'id' => 'pounds',
+        'label' => 'Pounds',
+        'unit' => 'lb',
+        'factor' => 0.45359237,
+        'type' => 'weight',
+      ],
+      'kilograms' => [
+        'id' => 'kilograms',
+        'label' => 'Kilograms',
+        'unit' => 'kg',
+        'factor' => 1,
+        'type' => 'weight',
+      ],
+    ];
+
+    $this->unitPluginManager = $this->getMock('\Drupal\physical\UnitManagerInterface');
+    $this->unitPluginManager->expects($this->any())
+                            ->method('getDefinitions')
+                            ->willReturn($definitions);
+    $this->unitPluginManager->expects($this->at(1))
+      ->method('createInstance')
+      ->with('pounds', $this->anything())
+      ->willReturn(new Unit(array(), 'pounds', $definitions['pounds']));
+    $this->unitPluginManager->expects($this->at(2))
+      ->method('createInstance')
+      ->with('kilograms', $this->anything())
+      ->willReturn(new Unit(array(), 'kilograms', $definitions['kilograms']));
 
     $container = new ContainerBuilder();
-    $container->set('plugin.manager.unit', $unit_plugin_manager);
+    $container->set('plugin.manager.unit', $this->unitPluginManager);
     \Drupal::setContainer($container);
 
     $this->weight = new Weight();
-    $this->unitLb = $this->weight->getUnit('lb');
-    $this->unitOz = $this->weight->getUnit('oz');
   }
 
   /**
-   * Test pound to kilogram conversion.
+   * Test weight can take a value.
    *
-   * @covers ::toBase
+   * @covers ::setWeight
    */
-  public function testLbToKg() {
-    $this->assertEquals(0.45359, $this->unitLb->toBase(1));
-    $this->assertEquals(61.23497, $this->unitLb->toBase(135));
+  public function testSetWeight() {
+    $this->weight->setWeight(135, 'lb');
   }
 
   /**
-   * Test kilogram to pound conversion.
+   * Test weight can take a value.
    *
-   * @covers ::fromBase
+   * @covers ::setWeight
+   * @covers ::getWeight
    */
-  public function testKgToLb() {
-    $this->assertEquals(2.20462, $this->unitLb->fromBase(1));
-    $this->assertEquals(135, $this->unitLb->fromBase(61.23497));
+  public function testGetWeight() {
+    $this->weight->setWeight(135, 'lb');
+    $this->assertEquals(135, $this->weight->getWeight('lb'));
   }
 
   /**
-   * Test ounces to pound conversion.
+   * Test weight can take a value.
    *
-   * @covers ::fromBase
-   * @covers ::toBase
+   * @covers ::setWeight
+   * @covers ::getWeight
    */
-  public function testOzToLb() {
-    $this->assertEquals(0.25, $this->unitLb->fromBase($this->unitOz->toBase(4)));
+  public function testGetWeightConversion() {
+    $this->weight->setWeight(135, 'lb');
+    $this->assertEquals(61.23497, $this->weight->getWeight('kg'));
   }
 
 }
