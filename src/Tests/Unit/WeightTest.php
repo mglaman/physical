@@ -7,12 +7,13 @@
 
 namespace Drupal\physical\Tests\Unit;
 
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\physical\Physical\Weight;
 use Drupal\physical\UnitPluginInterface;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * @coversDefaultClass \Drupal\physical\Unit\Unit
+ * @coversDefaultClass \Drupal\physical\Unit
  * @group physical
  */
 class WeightTest extends UnitTestCase {
@@ -38,6 +39,17 @@ class WeightTest extends UnitTestCase {
    */
   protected function setUp() {
     parent::setUp();
+
+    $definitions = [];
+    $unit_plugin_manager = $this->getMock('\Drupal\physical\UnitManagerInterface');
+    $unit_plugin_manager->expects($this->any())
+      ->method('getDefinitions')
+      ->willReturn($definitions);
+
+    $container = new ContainerBuilder();
+    $container->set('plugin.manager.unit', $unit_plugin_manager);
+    \Drupal::setContainer($container);
+
     $this->weight = new Weight();
     $this->unitLb = $this->weight->getUnit('lb');
     $this->unitOz = $this->weight->getUnit('oz');
