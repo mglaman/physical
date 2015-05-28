@@ -30,6 +30,8 @@ class WeightTest extends UnitTestCase {
 
   /**
    * {@inheritdoc}
+   *
+   * @covers ::__construct
    */
   protected function setUp() {
     parent::setUp();
@@ -39,6 +41,8 @@ class WeightTest extends UnitTestCase {
 
   /**
    * Test pound to kilogram conversion.
+   *
+   * @covers ::toBase
    */
   public function testLbToKg() {
     $this->assertEquals(0.45359, $this->unitLb->toBase(1));
@@ -47,6 +51,8 @@ class WeightTest extends UnitTestCase {
 
   /**
    * Test kilogram to pound conversion.
+   *
+   * @covers ::fromBase
    */
   public function testKgToLb() {
     $this->assertEquals(2.20462, $this->unitLb->fromBase(1));
@@ -55,6 +61,9 @@ class WeightTest extends UnitTestCase {
 
   /**
    * Test ounces to pound conversion.
+   *
+   * @covers ::fromBase
+   * @covers ::toBase
    */
   public function testOzToLb() {
     $this->assertEquals(0.25, $this->unitLb->fromBase($this->unitOz->toBase(4)));

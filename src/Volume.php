@@ -10,106 +10,41 @@ namespace Drupal\physical;
 use Drupal\physical\Unit\UnitFactory;
 
 /**
- * Class Volume.
- *
- * @package Drupal\physical
+ * Class Weight.
  */
 class Volume extends Physical {
   /**
-   * {@inheritdoc}
+   * Define components and units.
    */
   public function __construct() {
-    $this->addComponent('length');
-    $this->addComponent('width');
-    $this->addComponent('height');
+    $this->addComponent('volume');
+    $this->addUnit(UnitFactory::cubicMeter());
+    $this->addUnit(UnitFactory::cubicMeter());
+    $this->addUnit(UnitFactory::cubicMillimeter());
+    $this->addUnit(UnitFactory::cubicCentimeter());
+    $this->addUnit(UnitFactory::cubicYard());
+    $this->addUnit(UnitFactory::cubicFoot());
+    $this->addUnit(UnitFactory::cubicInch());
+    $this->addUnit(UnitFactory::liter());
+    $this->addUnit(UnitFactory::cup());
 
-    $this->addUnit(UnitFactory::inches());
-    $this->addUnit(UnitFactory::feet());
-    $this->addUnit(UnitFactory::millimeters());
-    $this->addUnit(UnitFactory::centimeters());
-    $this->addUnit(UnitFactory::millimeters());
-
-    $this->setDefault(UnitFactory::millimeters()->getUnit());
-
+    $this->setDefault(UnitFactory::cubicMeter()->getUnit());
   }
 
   /**
-   * Sets the length.
+   * Sets weight.
    *
    * @param int|float $value
-   *   The value to set the length to.
+   *    The value to set the length to.
    * @param string $unit_type
-   *   The unit type of the value.
+   *    The unit type of the value.
    */
-  public function setLength($value, $unit_type) {
-    $this->setComponentValue('length', $value, $unit_type);
+  public function setVolume($value, $unit_type) {
+    $this->setComponentValue('volume', $value, $unit_type);
   }
 
   /**
-   * Returns length as specified unit.
-   *
-   * @param string $unit_type
-   *    The unit type of the return value.
-   *
-   * @return float
-   *    Returns the unit's value.
-   */
-  public function getLength($unit_type) {
-    return $this->getComponentValue('length', $unit_type);
-  }
-
-  /**
-   * Sets width.
-   *
-   * @param int|float $value
-   *   The value to set the length to.
-   * @param string $unit_type
-   *   The unit type of the value.
-   */
-  public function setWidth($value, $unit_type) {
-    $this->setComponentValue('width', $value, $unit_type);
-  }
-
-  /**
-   * Returns width as specified unit.
-   *
-   * @param string $unit_type
-   *   The value to set the length to.
-   *
-   * @return float
-   *    Returns the unit's value.
-   */
-  public function getWidth($unit_type) {
-    return $this->getComponentValue('width', $unit_type);
-  }
-
-  /**
-   * Sets height.
-   *
-   * @param int|float $value
-   *   The value to set the length to.
-   * @param string $unit_type
-   *   The unit type of the value.
-   */
-  public function setHeight($value, $unit_type) {
-    $this->setComponentValue('height', $value, $unit_type);
-  }
-
-  /**
-   * Returns height as specified unit.
-   *
-   * @param string $unit_type
-   *   The value to set the length to.
-   *
-   * @return float
-   *    Returns the unit's value.
-   */
-  public function getHeight($unit_type) {
-    return $this->getComponentValue('height', $unit_type);
-  }
-
-  /**
-   * Returns computed volume.
+   * Returns weight as specified unit.
    *
    * @param string $unit_type
    *   The value to set the length to.
@@ -118,7 +53,7 @@ class Volume extends Physical {
    *    Returns the unit's value.
    */
   public function getVolume($unit_type) {
-    return $this->getLength($unit_type) * $this->getWidth($unit_type) * $this->getHeight($unit_type);
+    return $this->getComponentValue('volume', $unit_type);
   }
 
 }

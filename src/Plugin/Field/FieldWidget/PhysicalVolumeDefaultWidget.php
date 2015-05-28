@@ -96,8 +96,6 @@ class PhysicalVolumeDefaultWidget extends PhysicalWidgetBase {
     $element['#type'] = 'fieldset';
     $element['#attributes']['class'][] = 'physical-dimensions-textfields';
 
-//    $element['#attached']['css'][] = drupal_get_path('module', 'physical') . '/theme/physical.css';
-
     foreach (array_keys($this->physicalObject->getComponents()) as $key) {
       $element[$key] = array(
         '#type' => 'textfield',

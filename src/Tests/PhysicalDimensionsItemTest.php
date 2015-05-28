@@ -2,20 +2,28 @@
 
 /**
  * @file
- * Contains \Drupal\physical\Tests\PhysicalWeightItemTest.
+ * Contains \Drupal\physical\Tests\PhysicalDimensionsItemTest.
  */
 
 namespace Drupal\physical\Tests;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldItemInterface;
+use Drupal\field\Tests\FieldUnitTestBase;
 
 /**
  * Tests the new entity API for the physical volume field type.
  *
  * @group physical
  */
-class PhysicalVolumeItemTest extends PhysicalFieldUnitTest {
+class PhysicalDimensionsItemTest extends FieldUnitTestBase {
+
+  /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  public static $modules = array('physical');
 
   /**
    * {@inheritdoc}
@@ -27,7 +35,7 @@ class PhysicalVolumeItemTest extends PhysicalFieldUnitTest {
     entity_create('field_storage_config', array(
       'field_name' => 'field_test',
       'entity_type' => 'entity_test',
-      'type' => 'physical_volume',
+      'type' => 'physical_dimensions',
     ))->save();
     entity_create('field_config', array(
       'entity_type' => 'entity_test',

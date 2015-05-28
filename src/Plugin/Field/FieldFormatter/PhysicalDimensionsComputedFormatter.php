@@ -2,27 +2,26 @@
 
 /**
  * @file
- * Contains .
+ * Contains \Drupal\physical\Plugin\Field\FieldFormatter\PhysicalDimensionsComputedFormatter.
  */
 
 namespace Drupal\physical\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\physical\Volume;
+use Drupal\physical\Dimensions;
 
 /**
- * Plugin implementation of the 'physical_volume_formatted' formatter.
+ * Plugin implementation of the 'physical_dimensions_formatted' formatter.
  *
  * @FieldFormatter(
- *   id = "physical_volume_computed",
- *   label = @Translation("Computed volume"),
+ *   id = "physical_dimensions_computed",
+ *   label = @Translation("Computed dimensions"),
  *   field_types = {
- *     "physical_volume"
+ *     "physical_dimensions"
  *   }
  * )
  */
-class PhysicalVolumeComputedFormatter extends PhysicalFormatterBase {
+class PhysicalDimensionsComputedFormatter extends PhysicalFormatterBase {
 
   /**
    * {@inheritdoc}
@@ -30,9 +29,9 @@ class PhysicalVolumeComputedFormatter extends PhysicalFormatterBase {
   public function viewElements(FieldItemListInterface $items) {
     $element = [];
 
-    /** @var \Drupal\physical\Plugin\Field\FieldType\PhysicalVolumeItem $item */
+    /** @var \Drupal\physical\Plugin\Field\FieldType\PhysicalDimensionsItem $item */
     foreach ($items as $delta => $item) {
-      $volume = new Volume();
+      $volume = new Dimensions();
       $unit = $volume->getUnit($item->unit);
 
       $volume->setHeight($item->height, $unit->getUnit());

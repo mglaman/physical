@@ -7,10 +7,10 @@
 
 namespace Drupal\physical\Unit;
 
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-
 /**
  * Class UnitFactory.
+ *
+ * @todo Move these into annotated plugins, which define measurement type.
  */
 class UnitFactory {
 
@@ -102,6 +102,86 @@ class UnitFactory {
    */
   public static function pounds() {
     return new Unit(self::t('Pounds'), 'lb', 0.45359237);
+  }
+
+  /**
+   * Initiates a unit for Cubic meters.
+   *
+   * @return \Drupal\physical\Unit\Unit
+   *   An initiated Unit object.
+   */
+  public static function cubicMeter() {
+    return new Unit(self::t('Cubic meter'), 'm³', 1);
+  }
+
+  /**
+   * Initiates a unit for Cubic millimeters.
+   *
+   * @return \Drupal\physical\Unit\Unit
+   *   An initiated Unit object.
+   */
+  public static function cubicMillimeter() {
+    return new Unit(self::t('Cubic millimeter'), 'mm³', 1E-9);
+  }
+
+  /**
+   * Initiates a unit for Cubic centimeters.
+   *
+   * @return \Drupal\physical\Unit\Unit
+   *   An initiated Unit object.
+   */
+  public static function cubicCentimeter() {
+    return new Unit(self::t('Cubic Centimeter'), 'cm³', 1E-6);
+  }
+
+  /**
+   * Initiates a unit for Cubic yard.
+   *
+   * @return \Drupal\physical\Unit\Unit
+   *   An initiated Unit object.
+   */
+  public static function cubicYard() {
+    return new Unit(self::t('Cubic yard'), 'yd³', 7.64554858E-1);
+  }
+
+  /**
+   * Initiates a unit for Cubic foot.
+   *
+   * @return \Drupal\physical\Unit\Unit
+   *   An initiated Unit object.
+   */
+  public static function cubicFoot() {
+    return new Unit(self::t('Cubic foot'), 'f³', 2.8316846E-2);
+  }
+
+  /**
+   * Initiates a unit for Cubic inch.
+   *
+   * @return \Drupal\physical\Unit\Unit
+   *   An initiated Unit object.
+   */
+  public static function cubicInch() {
+    return new Unit(self::t('Cubic inch'), 'in³', 1.6387064E-5);
+  }
+
+  /**
+   * Initiates a unit for Liter.
+   *
+   * @return \Drupal\physical\Unit\Unit
+   *   An initiated Unit object.
+   */
+  public static function liter() {
+    return new Unit(self::t('Liter'), 'l', 1e-3);
+  }
+
+  /**
+   * Initiates a unit for Cup.
+   *
+   * @return \Drupal\physical\Unit\Unit
+   *   An initiated Unit object.
+   */
+  public static function cup() {
+    return new Unit(self::t('Cup'), 'cup', 2.365882e-4);
   }
 
   /**
