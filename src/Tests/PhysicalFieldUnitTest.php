@@ -5,7 +5,9 @@ namespace Drupal\physical\Tests;
 use Drupal\field\Tests\FieldUnitTestBase;
 
 /**
- * Class PhysicalFieldUnitTest.
+ * Base class for physical field types.
+ *
+ * @group physical
  */
 abstract class PhysicalFieldUnitTest extends FieldUnitTestBase {
 
