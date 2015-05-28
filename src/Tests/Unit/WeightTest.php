@@ -11,7 +11,8 @@ use Drupal\physical\Unit\Unit;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * Class WeightTest.
+ * @coversDefaultClass \Drupal\physical\Tests\Unit
+ * @group physical
  */
 class WeightTest extends UnitTestCase {
   /**
