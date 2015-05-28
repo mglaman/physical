@@ -5,9 +5,9 @@
  * Contains \Drupal\physical\Physical.
  */
 
-namespace Drupal\physical;
+namespace Drupal\physical\Physical;
 
-use Drupal\physical\Unit\Unit;
+use Drupal\physical\UnitPluginInterface;
 
 /**
  * Class Physical.
@@ -26,7 +26,7 @@ abstract class Physical implements PhysicalInterface {
   /**
    * Array of units.
    *
-   * @var Unit[]
+   * @var UnitPluginInterface[]
    */
   protected $units = [];
 
@@ -39,6 +39,38 @@ abstract class Physical implements PhysicalInterface {
    * @var string
    */
   protected $defaultUnit;
+
+  /**
+   * Returns plugin manager for Units.
+   *
+   * @return \Drupal\physical\UnitManagerInterface
+   *    Plugin manager
+   */
+  public static function unitPluginManager() {
+    return \Drupal::service('plugin.manager.unit');
+  }
+
+  /**
+   * Returns unit plugins by type.
+   *
+   * @param string $type
+   *    Measurement type.
+   *
+   * @return UnitPluginInterface[]
+   *    Returns array of unit plugins.
+   */
+  public static function getUnitPlugins($type) {
+    $manager = self::unitPluginManager();
+    $units = [];
+
+    foreach ($manager->getDefinitions() as $id => $plugin) {
+      if ($plugin['type'] == $type) {
+        $units[$id] = $manager->createInstance($id, $plugin);
+      }
+    }
+
+    return $units;
+  }
 
   /**
    * {@inheritdoc}
@@ -57,7 +89,7 @@ abstract class Physical implements PhysicalInterface {
   /**
    * {@inheritdoc}
    */
-  public function addUnit(Unit $unit) {
+  public function addUnit(UnitPluginInterface $unit) {
     $this->units[$unit->getUnit()] = $unit;
   }
 

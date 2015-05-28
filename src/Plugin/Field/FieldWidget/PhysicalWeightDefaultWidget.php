@@ -125,7 +125,6 @@ class PhysicalWeightDefaultWidget extends PhysicalWidgetBase {
       }
 
       // Display a unit of measurement select list after the textfield.
-//      $element['#attached']['css'][] = drupal_get_path('module', 'physical') . '/theme/physical.css';
       $element['weight']['#prefix'] = '<div class="physical-weight-textfield">';
 
       $element['unit'] = array(

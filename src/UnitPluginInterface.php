@@ -5,31 +5,12 @@
  * Contains \Drupal\physical\Unit\UnitInterface.
  */
 
-namespace Drupal\physical\Unit;
+namespace Drupal\physical;
 
 /**
  * Interface UnitInterface.
  */
-interface UnitInterface {
-  /**
-   * Creates a measurement unit.
-   *
-   * @param string $label
-   *   The display title for the unit.
-   * @param string $unit
-   *   The unit's abbreviation representation.
-   * @param int|float $factor
-   *   The factor amount for converting between units.
-   */
-  public function __construct($label, $unit, $factor);
-
-  /**
-   * Sets the unit's label.
-   *
-   * @param string $string
-   *    The label to use.
-   */
-  public function setLabel($string);
+interface UnitPluginInterface {
 
   /**
    * Returns the unit's label.
@@ -40,28 +21,12 @@ interface UnitInterface {
   public function getLabel();
 
   /**
-   * Sets the unit abbreviation.
-   *
-   * @param string $string
-   *   The abbreviation.
-   */
-  public function setUnit($string);
-
-  /**
    * Returns the unit abbreviation..
    *
    * @return string
    *    The abbreviation.
    */
   public function getUnit();
-
-  /**
-   * Sets the conversion factor amount.
-   *
-   * @param int|float $numeric
-   *   The factor amount.
-   */
-  public function setFactor($numeric);
 
   /**
    * Returns the factor amount for conversions.

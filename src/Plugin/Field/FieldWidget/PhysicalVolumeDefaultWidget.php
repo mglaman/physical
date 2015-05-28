@@ -110,9 +110,6 @@ class PhysicalVolumeDefaultWidget extends PhysicalWidgetBase {
       );
     }
 
-    // Remove the suffix from the last dimension element.
-//    unset($element[$key]['#field_suffix']);
-
     // If the user cannot select a different unit of measurement and the current
     // unit is the same as the default...
     if (!$this->allowUnitChange() && $value['unit'] == $this->defaultUnit()) {

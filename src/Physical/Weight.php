@@ -5,25 +5,29 @@
  * Contains \Drupal\physical\Weight.
  */
 
-namespace Drupal\physical;
-
-use Drupal\physical\Unit\UnitFactory;
+namespace Drupal\physical\Physical;
 
 /**
  * Class Weight.
  */
 class Weight extends Physical {
+
+  /**
+   * {@inheritdoc}
+   *
+   * Defaults to kilograms.
+   */
+  protected $defaultUnit = 'kg';
+
   /**
    * Define components and units.
    */
   public function __construct() {
     $this->addComponent('weight');
-    $this->addUnit(UnitFactory::grams());
-    $this->addUnit(UnitFactory::kilograms());
-    $this->addUnit(UnitFactory::ounces());
-    $this->addUnit(UnitFactory::pounds());
 
-    $this->setDefault(UnitFactory::kilograms()->getUnit());
+    foreach (self::getUnitPlugins('weight') as $unit) {
+      $this->addUnit($unit);
+    }
   }
 
   /**

@@ -5,9 +5,9 @@
  * Contains \Drupal\physical\Dimensions.
  */
 
-namespace Drupal\physical;
+namespace Drupal\physical\Physical;
 
-use Drupal\physical\Unit\UnitFactory;
+use Drupal\physical\UnitFactory;
 
 /**
  * Class Volume.
@@ -15,6 +15,14 @@ use Drupal\physical\Unit\UnitFactory;
  * @package Drupal\physical
  */
 class Dimensions extends Physical {
+
+  /**
+   * {@inheritdoc}
+   *
+   * Defaults to meters.
+   */
+  protected $defaultUnit = 'm';
+
   /**
    * {@inheritdoc}
    */
@@ -23,14 +31,9 @@ class Dimensions extends Physical {
     $this->addComponent('width');
     $this->addComponent('height');
 
-    $this->addUnit(UnitFactory::inches());
-    $this->addUnit(UnitFactory::feet());
-    $this->addUnit(UnitFactory::millimeters());
-    $this->addUnit(UnitFactory::centimeters());
-    $this->addUnit(UnitFactory::meters());
-
-    $this->setDefault(UnitFactory::meters()->getUnit());
-
+    foreach (self::getUnitPlugins('dimensions') as $unit) {
+      $this->addUnit($unit);
+    }
   }
 
   /**

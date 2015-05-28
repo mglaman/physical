@@ -7,7 +7,8 @@
 
 namespace Drupal\physical\Tests\Unit;
 
-use Drupal\physical\Unit\Unit;
+use Drupal\physical\Physical\Weight;
+use Drupal\physical\UnitPluginInterface;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -18,15 +19,17 @@ class WeightTest extends UnitTestCase {
   /**
    * Pounds unit.
    *
-   * @var Unit
+   * @var UnitPluginInterface
    */
   protected $unitLb;
   /**
    * Ounces unit.
    *
-   * @var Unit
+   * @var UnitPluginInterface
    */
   protected $unitOz;
+
+  protected $weight;
 
   /**
    * {@inheritdoc}
@@ -35,8 +38,9 @@ class WeightTest extends UnitTestCase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->unitLb = new Unit('Pounds', 'lb', 0.45359237);
-    $this->unitOz = new Unit('Ounces', 'oz', 2.83495E-2);
+    $this->weight = new Weight();
+    $this->unitLb = $this->weight->getUnit('lb');
+    $this->unitOz = $this->weight->getUnit('oz');
   }
 
   /**

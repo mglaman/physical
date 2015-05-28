@@ -5,30 +5,29 @@
  * Contains \Drupal\physical\Volume.
  */
 
-namespace Drupal\physical;
-
-use Drupal\physical\Unit\UnitFactory;
+namespace Drupal\physical\Physical;
 
 /**
  * Class Weight.
  */
 class Volume extends Physical {
+
+  /**
+   * {@inheritdoc}
+   *
+   * Defaults to kilograms.
+   */
+  protected $defaultUnit = 'm³';
+
   /**
    * Define components and units.
    */
   public function __construct() {
     $this->addComponent('volume');
-    $this->addUnit(UnitFactory::cubicMeter());
-    $this->addUnit(UnitFactory::cubicMeter());
-    $this->addUnit(UnitFactory::cubicMillimeter());
-    $this->addUnit(UnitFactory::cubicCentimeter());
-    $this->addUnit(UnitFactory::cubicYard());
-    $this->addUnit(UnitFactory::cubicFoot());
-    $this->addUnit(UnitFactory::cubicInch());
-    $this->addUnit(UnitFactory::liter());
-    $this->addUnit(UnitFactory::cup());
 
-    $this->setDefault(UnitFactory::cubicMeter()->getUnit());
+    foreach (self::getUnitPlugins('volume') as $unit) {
+      $this->addUnit($unit);
+    }
   }
 
   /**

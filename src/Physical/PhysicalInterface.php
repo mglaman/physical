@@ -5,9 +5,9 @@
  * Contains \Drupal\physical\PhysicalInterface.
  */
 
-namespace Drupal\physical;
+namespace Drupal\physical\Physical;
 
-use Drupal\physical\Unit\Unit;
+use Drupal\physical\UnitPluginInterface;
 
 /**
  * Interface PhysicalInterface.
@@ -38,15 +38,15 @@ interface PhysicalInterface {
   /**
    * Adds a unit of measurement.
    *
-   * @param Unit $unit
+   * @param UnitPluginInterface $unit
    *   Adds a unit that values can be processed as.
    */
-  public function addUnit(Unit $unit);
+  public function addUnit(UnitPluginInterface $unit);
 
   /**
    * Returns array of defined units.
    *
-   * @return Unit[]
+   * @return UnitPluginInterface[]
    *   Returns array of units added to this physical measurement.
    */
   public function getUnits();
@@ -57,8 +57,10 @@ interface PhysicalInterface {
    * @param string $unit_type
    *   The type of unit.
    *
-   * @return Unit
+   * @return UnitPluginInterface
    *   A unit object.
+   *
+   * @todo: Now that units are annotated plugins, use plugin_id vs abbr.
    */
   public function getUnit($unit_type);
 

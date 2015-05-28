@@ -7,7 +7,8 @@
 
 namespace Drupal\physical\Tests\Unit;
 
-use Drupal\physical\Unit\Unit;
+use Drupal\physical\Physical\Volume;
+use Drupal\physical\UnitPluginInterface;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -18,15 +19,17 @@ class VolumeTest extends UnitTestCase {
   /**
    * Cubic meter unit.
    *
-   * @var Unit
+   * @var UnitPluginInterface
    */
   protected $unitCubicMeter;
   /**
    * Cup unit.
    *
-   * @var Unit
+   * @var UnitPluginInterface
    */
   protected $unitCup;
+
+  protected $volume;
 
   /**
    * {@inheritdoc}
@@ -35,8 +38,9 @@ class VolumeTest extends UnitTestCase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->unitCubicMeter = new Unit('Cubic meter', 'm³', 1);
-    $this->unitCup = new Unit('Cup', 'cup', 2.365882e-4);
+    $this->volume = new Volume();
+    $this->unitCubicMeter = $this->volume->getUnit('m³');
+    $this->unitCup = $this->volume->getUnit('cup');
   }
 
   /**
