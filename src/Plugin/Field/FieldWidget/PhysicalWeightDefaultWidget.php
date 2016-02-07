@@ -10,7 +10,7 @@ namespace Drupal\physical\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\physical\Weight;
+use Drupal\physical\Physical\Weight;
 
 /**
  * Plugin implementation of the 'physical_weight_default' widget.
