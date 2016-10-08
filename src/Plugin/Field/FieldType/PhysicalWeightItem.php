@@ -1,15 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Plugin\Field\FieldType\PhysicalWeightItem.
- */
-
 namespace Drupal\physical\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
+use PhpUnitsOfMeasure\PhysicalQuantity\Mass;
 
 /**
  * Plugin implementation of the 'physical_weight' field type.
@@ -23,45 +19,24 @@ use Drupal\Core\TypedData\DataDefinition;
  *   default_formatter = "physical_weight_formatted"
  * )
  */
-class PhysicalWeightItem extends FieldItemBase {
+class PhysicalWeightItem extends PhysicalItemBase implements PhysicalItemInterface {
+
   /**
    * {@inheritdoc}
    */
-  public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'weight' => array(
-          'description' => 'The numeric weight value.',
-          'type' => 'numeric',
-          'size' => 'normal',
-          'not null' => TRUE,
-          'default' => 0,
-          'precision' => 15,
-          'scale' => 5,
-        ),
-        'unit' => array(
-          'description' => 'The unit of measurement.',
-          'type' => 'varchar',
-          'length' => '255',
-          'not null' => TRUE,
-          'default' => '',
-        ),
-      ),
-      'indexes' => array(
-        'weight' => array('weight'),
-      ),
-    );
+  public function getPhysicalQuantityClass() {
+    return Mass::class;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-    $properties['weight'] = DataDefinition::create('integer')
-                                         ->setLabel(t('Physical weight'))
-                                         ->setRequired(TRUE);
+    $properties['value'] = DataDefinition::create('float')
+      ->setLabel(t('Physical weight'))
+      ->setRequired(TRUE);
     $properties['unit'] = DataDefinition::create('string')
-                                          ->setLabel(t('Physical unit'));
+      ->setLabel(t('Physical unit'));
 
     return $properties;
   }
@@ -69,8 +44,34 @@ class PhysicalWeightItem extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
+  public static function schema(FieldStorageDefinitionInterface $field_definition) {
+    return [
+      'columns' => [
+        'value' => [
+          'description' => 'The numeric weight value.',
+          'type' => 'numeric',
+          'size' => 'normal',
+          'not null' => TRUE,
+          'default' => 0,
+          'precision' => 15,
+          'scale' => 5,
+        ],
+        'unit' => [
+          'description' => 'The unit of measurement.',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE,
+          'default' => '',
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function isEmpty() {
-    $value = $this->get('weight')->getValue();
+    $value = $this->get('value')->getValue();
     return $value === NULL || $value === '';
   }
 

@@ -1,0 +1,12 @@
+field.widget.settings.physical_weight_default:
+  type: physical_widget_configuration
+
+physical_widget_configuration:
+  type: mapping
+  mapping:
+    default_unit:
+      type: string
+      label: 'Default unit'
+    unit_select_list:
+      type: boolean
+      label: 'Allow customization of the default unit'

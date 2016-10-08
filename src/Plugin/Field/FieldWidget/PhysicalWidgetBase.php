@@ -8,6 +8,7 @@
 namespace Drupal\physical\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\WidgetBase;
+use Drupal\Core\Form\FormStateInterface;
 
 
 /**
@@ -16,19 +17,49 @@ use Drupal\Core\Field\WidgetBase;
 abstract class PhysicalWidgetBase extends WidgetBase {
 
   /**
-   * Physical object.
+   * Gets the class physical quantity class used by the field item.
    *
-   * @var \Drupal\physical\PhysicalInterface
+   * @return \PhpUnitsOfMeasure\AbstractPhysicalQuantity
+   *   The physical quantity class.
    */
-  protected $physicalObject;
+  abstract protected function getPhysicalQuantityClass();
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'default_unit' => 'lb',
+      'unit_select_list' => TRUE,
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $element['default_unit'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Unit of measurement'),
+      '#options' => $this->unitOptions(),
+      '#default_value' => $this->defaultUnit(),
+    ];
+
+    $element['unit_select_list'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Allow the user to select a different unit of measurement on forms.'),
+      '#default_value' => $this->allowUnitChange(),
+    ];
+    return $element;
+  }
 
   /**
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = array();
+    $summary = [];
 
-    $summary[] = $this->t('Unit of measurement: @unit', array('@unit' => $this->getSetting('default_unit')));
+    $summary[] = $this->t('Unit of measurement: @unit', ['@unit' => $this->getSetting('default_unit')]);
 
     if (!$this->allowUnitChange()) {
       $summary[] = $this->t('User cannot modify the unit of measurement.');
@@ -68,9 +99,13 @@ abstract class PhysicalWidgetBase extends WidgetBase {
    */
   protected function unitOptions() {
     $options = [];
-    foreach ($this->physicalObject->getUnits() as $key => $unit) {
-      $options[$key] = $unit->getLabel();
+
+    $class = $this->getPhysicalQuantityClass();
+    /** @var \PhpUnitsOfMeasure\UnitOfMeasureInterface $definition */
+    foreach ($class::getUnitDefinitions() as $definition) {
+      $options[$definition->getName()] = $definition->getName();
     }
+
     return $options;
   }
 

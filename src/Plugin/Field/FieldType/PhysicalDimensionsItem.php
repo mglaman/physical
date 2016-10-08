@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Plugin\Field\FieldType\PhysicalDimensionsItem.
- */
 
 namespace Drupal\physical\Plugin\Field\FieldType;
 
@@ -24,45 +20,46 @@ use Drupal\Core\TypedData\DataDefinition;
  * )
  */
 class PhysicalDimensionsItem extends FieldItemBase {
+
   /**
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'length' => array(
+    return [
+      'columns' => [
+        'length' => [
           'description' => 'The numeric length value.',
           'type' => 'numeric',
           'size' => 'normal',
           'default' => 0,
           'precision' => 15,
           'scale' => 5,
-        ),
-        'width' => array(
+        ],
+        'width' => [
           'description' => 'The numeric width value.',
           'type' => 'numeric',
           'size' => 'normal',
           'default' => 0,
           'precision' => 15,
           'scale' => 5,
-        ),
-        'height' => array(
+        ],
+        'height' => [
           'description' => 'The numeric height value.',
           'type' => 'numeric',
           'size' => 'normal',
           'default' => 0,
           'precision' => 15,
           'scale' => 5,
-        ),
-        'unit' => array(
+        ],
+        'unit' => [
           'description' => 'The unit of measurement.',
           'type' => 'varchar',
           'length' => '255',
           'not null' => TRUE,
           'default' => '',
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
   /**
@@ -70,16 +67,16 @@ class PhysicalDimensionsItem extends FieldItemBase {
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     $properties['length'] = DataDefinition::create('integer')
-                                         ->setLabel(t('Length'))
-                                         ->setRequired(TRUE);
+      ->setLabel(t('Length'))
+      ->setRequired(TRUE);
     $properties['width'] = DataDefinition::create('integer')
-                                          ->setLabel(t('Width'))
-                                          ->setRequired(TRUE);
+      ->setLabel(t('Width'))
+      ->setRequired(TRUE);
     $properties['height'] = DataDefinition::create('integer')
-                                          ->setLabel(t('Height'))
-                                          ->setRequired(TRUE);
+      ->setLabel(t('Height'))
+      ->setRequired(TRUE);
     $properties['unit'] = DataDefinition::create('string')
-                                        ->setLabel(t('Physical unit'));
+      ->setLabel(t('Physical unit'));
 
     return $properties;
   }

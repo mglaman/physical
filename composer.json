@@ -4,5 +4,8 @@
     "description": "Physical supplies such fields as physical weight and dimensions.",
     "homepage": "http://drupal.org/project/physical",
     "license": "GPL-2.0+",
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require": {
+        "php-units-of-measure/php-units-of-measure": "~2.1"
+    }
 }

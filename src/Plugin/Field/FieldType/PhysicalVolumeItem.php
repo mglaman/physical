@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Plugin\Field\FieldType\PhysicalWeightItem.
- */
-
 namespace Drupal\physical\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
@@ -24,29 +19,30 @@ use Drupal\Core\TypedData\DataDefinition;
  * )
  */
 class PhysicalVolumeItem extends FieldItemBase {
+
   /**
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'volume' => array(
+    return [
+      'columns' => [
+        'volume' => [
           'description' => 'The numeric volume value.',
           'type' => 'numeric',
           'size' => 'normal',
           'default' => 0,
           'precision' => 15,
           'scale' => 5,
-        ),
-        'unit' => array(
+        ],
+        'unit' => [
           'description' => 'The unit of measurement.',
           'type' => 'varchar',
           'length' => '255',
           'not null' => TRUE,
           'default' => '',
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
   /**
@@ -54,10 +50,10 @@ class PhysicalVolumeItem extends FieldItemBase {
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     $properties['volume'] = DataDefinition::create('integer')
-                                         ->setLabel(t('Volume'))
-                                         ->setRequired(TRUE);
+      ->setLabel(t('Volume'))
+      ->setRequired(TRUE);
     $properties['unit'] = DataDefinition::create('string')
-                                        ->setLabel(t('Physical unit'));
+      ->setLabel(t('Physical unit'));
 
     return $properties;
   }
