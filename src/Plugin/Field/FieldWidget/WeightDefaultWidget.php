@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Field\FieldWidget\PhysicalWeightDefaultWidget.
- */
-
 namespace Drupal\physical\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Form\FormStateInterface;

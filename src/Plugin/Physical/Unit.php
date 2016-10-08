@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Unit\Unit.
- */
-
 namespace Drupal\physical\Plugin\Physical;
 
 use Drupal\Core\Plugin\PluginBase;

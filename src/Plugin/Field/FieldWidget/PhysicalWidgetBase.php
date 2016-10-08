@@ -9,7 +9,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\physical\UnitManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
 /**
  * Class PhysicalWidgetBase.
  */

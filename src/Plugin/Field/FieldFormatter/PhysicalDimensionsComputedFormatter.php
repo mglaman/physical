@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Plugin\Field\FieldFormatter\PhysicalDimensionsComputedFormatter.
- */
-
 namespace Drupal\physical\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;

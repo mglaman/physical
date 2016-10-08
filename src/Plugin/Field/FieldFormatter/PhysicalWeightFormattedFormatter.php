@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains .
- */
-
 namespace Drupal\physical\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -46,7 +41,7 @@ class PhysicalWeightFormattedFormatter extends PhysicalFormatterBase {
         '#markup' => $this->t('@weight @unit', array(
           '@weight' => $unit->round($item->weight),
           '@unit' => $unit->getUnit(),
-          )
+        )
         ),
       );
     }

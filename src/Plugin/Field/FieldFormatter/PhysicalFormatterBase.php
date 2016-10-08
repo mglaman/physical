@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Plugin\Field\FieldFormatter\PhysicalFormatterBase.
- */
-
 namespace Drupal\physical\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FormatterBase;

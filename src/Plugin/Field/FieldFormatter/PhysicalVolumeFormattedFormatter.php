@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains .
- */
-
 namespace Drupal\physical\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -31,6 +26,7 @@ class PhysicalVolumeFormattedFormatter extends PhysicalFormatterBase {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
     $this->physicalObject = new Volume();
   }
+
   /**
    * {@inheritdoc}
    */
@@ -43,9 +39,9 @@ class PhysicalVolumeFormattedFormatter extends PhysicalFormatterBase {
 
       $element[$delta] = array(
         '#markup' => $this->t('@value @unit', array(
-            '@value' => $unit->round($item->weight),
-            '@unit' => $unit->getUnit(),
-          )
+          '@value' => $unit->round($item->weight),
+          '@unit' => $unit->getUnit(),
+        )
         ),
       );
     }
