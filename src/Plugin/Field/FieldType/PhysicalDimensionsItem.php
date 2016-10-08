@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Plugin\Field\FieldType\PhysicalDimensionsItem.
- */
-
 namespace Drupal\physical\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
@@ -23,65 +18,81 @@ use Drupal\Core\TypedData\DataDefinition;
  *   default_formatter = "physical_dimensions_formatted"
  * )
  */
-class PhysicalDimensionsItem extends FieldItemBase {
+class PhysicalDimensionsItem extends FieldItemBase implements PhysicalItemInterface {
+
   /**
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'length' => array(
+    return [
+      'columns' => [
+        'length' => [
           'description' => 'The numeric length value.',
           'type' => 'numeric',
           'size' => 'normal',
           'default' => 0,
           'precision' => 15,
           'scale' => 5,
-        ),
-        'width' => array(
+        ],
+        'width' => [
           'description' => 'The numeric width value.',
           'type' => 'numeric',
           'size' => 'normal',
           'default' => 0,
           'precision' => 15,
           'scale' => 5,
-        ),
-        'height' => array(
+        ],
+        'height' => [
           'description' => 'The numeric height value.',
           'type' => 'numeric',
           'size' => 'normal',
           'default' => 0,
           'precision' => 15,
           'scale' => 5,
-        ),
-        'unit' => array(
+        ],
+        'unit' => [
           'description' => 'The unit of measurement.',
           'type' => 'varchar',
           'length' => '255',
           'not null' => TRUE,
           'default' => '',
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-    $properties['length'] = DataDefinition::create('integer')
-                                         ->setLabel(t('Length'))
-                                         ->setRequired(TRUE);
-    $properties['width'] = DataDefinition::create('integer')
-                                          ->setLabel(t('Width'))
-                                          ->setRequired(TRUE);
-    $properties['height'] = DataDefinition::create('integer')
-                                          ->setLabel(t('Height'))
-                                          ->setRequired(TRUE);
+    $properties['length'] = DataDefinition::create('float')
+      ->setLabel(t('Length'))
+      ->setRequired(TRUE);
+    $properties['width'] = DataDefinition::create('float')
+      ->setLabel(t('Width'))
+      ->setRequired(TRUE);
+    $properties['height'] = DataDefinition::create('float')
+      ->setLabel(t('Height'))
+      ->setRequired(TRUE);
     $properties['unit'] = DataDefinition::create('string')
-                                        ->setLabel(t('Physical unit'));
+      ->setLabel(t('Physical unit'));
 
     return $properties;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function mainPropertyName() {
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUnit() {
+    $manager = \Drupal::getContainer()->get('physical.weight');
+    return $manager->getUnit($this->get('unit')->getValue());
   }
 
 }

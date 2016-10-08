@@ -27,7 +27,7 @@ class Volume extends Physical {
     parent::__construct($unit_manager);
     $this->addComponent('volume');
 
-    foreach ($this->getUnitPlugins('volume') as $unit) {
+    foreach ($this->unitManager->getByType('volume') as $unit) {
       $this->addUnit($unit);
     }
   }

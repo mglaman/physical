@@ -1,15 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains .
- */
-
 namespace Drupal\physical;
 
+use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Plugin\CategorizingPluginManagerTrait;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Plugin\Discovery\ContainerDerivativeDiscoveryDecorator;
 use Drupal\Core\Plugin\Discovery\YamlDiscovery;
@@ -17,7 +12,7 @@ use Drupal\Core\Plugin\Discovery\YamlDiscovery;
 /**
  * Class UnitManager.
  */
-class UnitManager extends DefaultPluginManager {
+class UnitManager extends DefaultPluginManager implements UnitManagerInterface {
 
   /**
    * Default values for each unit plugin.
@@ -43,7 +38,7 @@ class UnitManager extends DefaultPluginManager {
    */
   public function __construct(CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
     $this->moduleHandler = $module_handler;
-    $this->setCacheBackend($cache_backend, 'physical_unit_plugins');
+    $this->setCacheBackend($cache_backend, 'physical_unit_plugins', ['physical_unit']);
   }
 
   /**
@@ -52,8 +47,37 @@ class UnitManager extends DefaultPluginManager {
   protected function getDiscovery() {
     if (!isset($this->discovery)) {
       $this->discovery = new YamlDiscovery('physical_unit', $this->moduleHandler->getModuleDirectories());
+      $this->discovery->addTranslatableProperty('label');
       $this->discovery = new ContainerDerivativeDiscoveryDecorator($this->discovery);
     }
     return $this->discovery;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function processDefinition(&$definition, $plugin_id) {
+    parent::processDefinition($definition, $plugin_id);
+
+    $definition['id'] = $plugin_id;
+    foreach (['unit', 'factor', 'type'] as $required_property) {
+      if (empty($definition[$required_property])) {
+        throw new PluginException(sprintf('The physical unit %s must define the %s property.', $plugin_id, $required_property));
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getByType($type) {
+    $units = [];
+    foreach ($this->getDefinitions() as $id => $plugin) {
+      if ($plugin['type'] == $type) {
+        $units[$id] = $this->createInstance($id, $plugin);
+      }
+    }
+    return $units;
+  }
+
 }

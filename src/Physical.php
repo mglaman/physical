@@ -2,7 +2,7 @@
 
 namespace Drupal\physical;
 
-use Drupal\physical\UnitManager;
+use Drupal\physical\UnitManagerInterface;
 use Drupal\physical\Plugin\Physical\UnitInterface;
 
 /**
@@ -39,37 +39,18 @@ abstract class Physical implements PhysicalInterface {
   /**
    * The unit manager.
    *
-   * @var \Drupal\physical\UnitManager
+   * @var \Drupal\physical\UnitManagerInterface
    */
   protected $unitManager;
 
   /**
    * Constructs a new Physical object.
    *
-   * @param \Drupal\physical\UnitManager $unit_manager
+   * @param \Drupal\physical\UnitManagerInterface $unit_manager
    *   The unit manager.
    */
-  public function __construct(UnitManager $unit_manager) {
+  public function __construct(UnitManagerInterface $unit_manager) {
     $this->unitManager = $unit_manager;
-  }
-
-  /**
-   * Returns unit plugins by type.
-   *
-   * @param string $type
-   *    Measurement type.
-   *
-   * @return \Drupal\physical\Plugin\Physical\UnitInterface[]
-   *    Returns array of unit plugins.
-   */
-  public function getUnitPlugins($type) {
-    $units = [];
-    foreach ($this->unitManager->getDefinitions() as $id => $plugin) {
-      if ($plugin['type'] == $type) {
-        $units[$id] = $this->unitManager->createInstance($id, $plugin);
-      }
-    }
-    return $units;
   }
 
   /**
@@ -108,6 +89,7 @@ abstract class Physical implements PhysicalInterface {
       return $this->getUnits()[$unit_type];
     }
     else {
+      var_dump($this->getUnits());
       throw new \Exception(sprintf('Unit plugin %s not found.', $unit_type));
     }
   }

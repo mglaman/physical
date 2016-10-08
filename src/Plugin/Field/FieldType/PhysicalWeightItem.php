@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Plugin\Field\FieldType\PhysicalWeightItem.
- */
-
 namespace Drupal\physical\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
@@ -23,14 +18,15 @@ use Drupal\Core\TypedData\DataDefinition;
  *   default_formatter = "physical_weight_formatted"
  * )
  */
-class PhysicalWeightItem extends FieldItemBase {
+class PhysicalWeightItem extends FieldItemBase implements PhysicalItemInterface {
+
   /**
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'weight' => array(
+    return [
+      'columns' => [
+        'weight' => [
           'description' => 'The numeric weight value.',
           'type' => 'numeric',
           'size' => 'normal',
@@ -38,32 +34,39 @@ class PhysicalWeightItem extends FieldItemBase {
           'default' => 0,
           'precision' => 15,
           'scale' => 5,
-        ),
-        'unit' => array(
+        ],
+        'unit' => [
           'description' => 'The unit of measurement.',
           'type' => 'varchar',
           'length' => '255',
           'not null' => TRUE,
           'default' => '',
-        ),
-      ),
-      'indexes' => array(
-        'weight' => array('weight'),
-      ),
-    );
+        ],
+      ],
+      'indexes' => [
+        'weight' => ['weight'],
+      ],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-    $properties['weight'] = DataDefinition::create('integer')
-                                         ->setLabel(t('Physical weight'))
-                                         ->setRequired(TRUE);
+    $properties['weight'] = DataDefinition::create('float')
+      ->setLabel(t('Physical weight'))
+      ->setRequired(TRUE);
     $properties['unit'] = DataDefinition::create('string')
-                                          ->setLabel(t('Physical unit'));
+      ->setLabel(t('Physical unit'));
 
     return $properties;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function mainPropertyName() {
+    return 'weight';
   }
 
   /**
@@ -72,6 +75,14 @@ class PhysicalWeightItem extends FieldItemBase {
   public function isEmpty() {
     $value = $this->get('weight')->getValue();
     return $value === NULL || $value === '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUnit() {
+    $manager = \Drupal::getContainer()->get('physical.weight');
+    return $manager->getUnit($this->get('unit')->getValue());
   }
 
 }
