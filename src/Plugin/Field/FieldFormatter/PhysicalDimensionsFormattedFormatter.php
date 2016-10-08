@@ -4,6 +4,7 @@ namespace Drupal\physical\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\FormatterBase;
 use Drupal\physical\Dimensions;
 
 /**
@@ -17,35 +18,23 @@ use Drupal\physical\Dimensions;
  *   }
  * )
  */
-class PhysicalDimensionsFormattedFormatter extends PhysicalFormatterBase {
+class PhysicalDimensionsFormattedFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-    $this->physicalObject = new Dimensions();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function viewElements(FieldItemListInterface $items) {
+  public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
     /** @var \Drupal\physical\Plugin\Field\FieldType\PhysicalDimensionsItem $item */
     foreach ($items as $delta => $item) {
-      $unit = $this->physicalObject->getUnit($item->unit);
-
-      $data = array();
-
-      foreach (array_keys($this->physicalObject->getComponents()) as $key) {
-        $data[] = $unit->round($item->{$key});
-      }
-
-      $element[$delta] = array(
-        '#markup' => implode(' &times; ', $data) . ' ' . $unit->getUnit(),
-      );
+      $element[$delta] = [
+        '#markup' => implode(' &times; ', [
+          $item->length,
+          $item->width,
+          $item->height,
+        ]) . ' ' . $item->unit,
+      ];
     }
     return $element;
   }

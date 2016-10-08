@@ -3,6 +3,7 @@
 namespace Drupal\physical\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\FormatterBase;
 use Drupal\physical\Dimensions;
 
 /**
@@ -16,26 +17,22 @@ use Drupal\physical\Dimensions;
  *   }
  * )
  */
-class PhysicalDimensionsComputedFormatter extends PhysicalFormatterBase {
+class PhysicalDimensionsComputedFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items) {
+  public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
     /** @var \Drupal\physical\Plugin\Field\FieldType\PhysicalDimensionsItem $item */
     foreach ($items as $delta => $item) {
-      $volume = new Dimensions();
-      $unit = $volume->getUnit($item->unit);
-
-      $volume->setHeight($item->height, $unit->getUnit());
-      $volume->setLength($item->length, $unit->getUnit());
-      $volume->setWidth($item->width, $unit->getUnit());
-
-      $element[$delta] = array(
-        '#markup' => $volume->getVolume($unit->getUnit()) . ' ' . $unit->getUnit() . '<sup>3</sup>',
-      );
+      $element[$delta] = [
+        '#markup' => $this->t('@value @unit', [
+          '@value' => $item->getVolume(),
+          '@unit' => $item->unit,
+        ]),
+      ];
     }
     return $element;
   }
