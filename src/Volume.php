@@ -1,11 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Volume.
- */
 
-namespace Drupal\physical\Physical;
+namespace Drupal\physical;
+
+use Drupal\physical\UnitManager;
 
 /**
  * Class Weight.
@@ -15,14 +13,18 @@ class Volume extends Physical {
   /**
    * {@inheritdoc}
    *
-   * Defaults to kilograms.
+   * Defaults to meters cubed.
    */
   protected $defaultUnit = 'm³';
 
   /**
-   * Define components and units.
+   * Constructs a new Physical object.
+   *
+   * @param \Drupal\physical\UnitManager $unit_manager
+   *   The unit manager.
    */
-  public function __construct() {
+  public function __construct(UnitManager $unit_manager) {
+    parent::__construct($unit_manager);
     $this->addComponent('volume');
 
     foreach ($this->getUnitPlugins('volume') as $unit) {

@@ -2,3 +2,12 @@ services:
   plugin.manager.unit:
     class: Drupal\physical\UnitManager
     arguments: ['@cache.discovery', '@module_handler']
+  physical.dimension:
+    class: Drupal\physical\Physical\Dimensions
+    arguments: ['@plugin.manager.unit']
+  physical.volume:
+    class: Drupal\physical\Physical\Volume
+    arguments: ['@plugin.manager.unit']
+  physical.weight:
+    class: Drupal\physical\Physical\Weight
+    arguments: ['@plugin.manager.unit']

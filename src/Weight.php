@@ -1,11 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Weight.
- */
+namespace Drupal\physical;
 
-namespace Drupal\physical\Physical;
+use Drupal\physical\UnitManager;
 
 /**
  * Class Weight.
@@ -20,9 +17,13 @@ class Weight extends Physical {
   protected $defaultUnit = 'kg';
 
   /**
-   * Define components and units.
+   * Constructs a new Physical object.
+   *
+   * @param \Drupal\physical\UnitManager $unit_manager
+   *   The unit manager.
    */
-  public function __construct() {
+  public function __construct(UnitManager $unit_manager) {
+    parent::__construct($unit_manager);
     $this->addComponent('weight');
 
     foreach ($this->getUnitPlugins('weight') as $unit) {

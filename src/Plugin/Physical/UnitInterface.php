@@ -5,12 +5,12 @@
  * Contains \Drupal\physical\Unit\UnitInterface.
  */
 
-namespace Drupal\physical;
+namespace Drupal\physical\Plugin\Physical;
 
 /**
  * Interface UnitInterface.
  */
-interface UnitPluginInterface {
+interface UnitInterface {
 
   /**
    * Returns the unit's label.

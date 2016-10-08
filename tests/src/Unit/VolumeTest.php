@@ -1,19 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Tests\Unit\WeightTest.
- */
-
 namespace Drupal\physical\Tests\Unit;
 
-use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\physical\Physical\Volume;
+use Drupal\physical\Volume;
 use Drupal\Tests\UnitTestCase;
-use Drupal\physical\Unit;
+use Drupal\physical\Plugin\Physical\Unit;
 
 /**
- * @coversDefaultClass \Drupal\physical\Physical\Volume
+ * @coversDefaultClass \Drupal\physical\Volume
  * @group physical
  */
 class VolumeTest extends UnitTestCase {
@@ -21,7 +15,7 @@ class VolumeTest extends UnitTestCase {
   /**
    * The mock unit plugin manager.
    *
-   * @var \Drupal\physical\UnitManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\physical\UnitManager|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $unitPluginManager;
 
@@ -57,24 +51,21 @@ class VolumeTest extends UnitTestCase {
       ],
     ];
 
-    $this->unitPluginManager = $this->getMock('\Drupal\physical\UnitManagerInterface');
+    $this->unitPluginManager = $this->getMockBuilder('\Drupal\physical\UnitManager')
+      ->disableOriginalConstructor()->getMock();
     $this->unitPluginManager->expects($this->any())
-                            ->method('getDefinitions')
-                            ->willReturn($definitions);
+      ->method('getDefinitions')
+      ->willReturn($definitions);
     $this->unitPluginManager->expects($this->at(1))
-                            ->method('createInstance')
-                            ->with('cubic_meter', $this->anything())
-                            ->willReturn(new Unit(array(), 'cubic_meter', $definitions['cubic_meter']));
+      ->method('createInstance')
+      ->with('cubic_meter', $this->anything())
+      ->willReturn(new Unit([], 'cubic_meter', $definitions['cubic_meter']));
     $this->unitPluginManager->expects($this->at(2))
-                            ->method('createInstance')
-                            ->with('cup', $this->anything())
-                            ->willReturn(new Unit(array(), 'cup', $definitions['cup']));
+      ->method('createInstance')
+      ->with('cup', $this->anything())
+      ->willReturn(new Unit([], 'cup', $definitions['cup']));
 
-    $container = new ContainerBuilder();
-    $container->set('plugin.manager.unit', $this->unitPluginManager);
-    \Drupal::setContainer($container);
-
-    $this->volume = new Volume();
+    $this->volume = new Volume($this->unitPluginManager);
   }
 
   /**

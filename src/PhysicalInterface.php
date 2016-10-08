@@ -1,23 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\PhysicalInterface.
- */
+namespace Drupal\physical;
 
-namespace Drupal\physical\Physical;
-
-use Drupal\physical\UnitPluginInterface;
+use Drupal\physical\Plugin\Physical\UnitInterface;
 
 /**
  * Interface PhysicalInterface.
  */
 interface PhysicalInterface {
-
-  /**
-   * Define components and units.
-   */
-  public function __construct();
 
   /**
    * Adds a component that makes up physical measurement.
@@ -38,15 +28,15 @@ interface PhysicalInterface {
   /**
    * Adds a unit of measurement.
    *
-   * @param UnitPluginInterface $unit
+   * @param \Drupal\physical\Plugin\Physical\UnitInterface $unit
    *   Adds a unit that values can be processed as.
    */
-  public function addUnit(UnitPluginInterface $unit);
+  public function addUnit(UnitInterface $unit);
 
   /**
    * Returns array of defined units.
    *
-   * @return UnitPluginInterface[]
+   * @return \Drupal\physical\Plugin\Physical\UnitInterface[]
    *   Returns array of units added to this physical measurement.
    */
   public function getUnits();
@@ -57,10 +47,8 @@ interface PhysicalInterface {
    * @param string $unit_type
    *   The type of unit.
    *
-   * @return UnitPluginInterface
+   * @return \Drupal\physical\Plugin\Physical\UnitInterface
    *   A unit object.
-   *
-   * @todo: Now that units are annotated plugins, use plugin_id vs abbr.
    */
   public function getUnit($unit_type);
 

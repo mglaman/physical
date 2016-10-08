@@ -17,12 +17,7 @@ use Drupal\Core\Plugin\Discovery\YamlDiscovery;
 /**
  * Class UnitManager.
  */
-class UnitManager extends DefaultPluginManager implements UnitManagerInterface {
-
-  use CategorizingPluginManagerTrait {
-    getSortedDefinitions as traitGetSortedDefinitions;
-    getGroupedDefinitions as traitGetGroupedDefinitions;
-  }
+class UnitManager extends DefaultPluginManager {
 
   /**
    * Default values for each unit plugin.
@@ -35,7 +30,7 @@ class UnitManager extends DefaultPluginManager implements UnitManagerInterface {
     'unit' => '',
     'factor' => 0.00,
     'type' => '',
-    'class' => 'Drupal\physical\Unit',
+    'class' => 'Drupal\physical\Plugin\Physical\Unit',
   ];
 
   /**
@@ -56,7 +51,7 @@ class UnitManager extends DefaultPluginManager implements UnitManagerInterface {
    */
   protected function getDiscovery() {
     if (!isset($this->discovery)) {
-      $this->discovery = new YamlDiscovery('units', $this->moduleHandler->getModuleDirectories());
+      $this->discovery = new YamlDiscovery('physical_unit', $this->moduleHandler->getModuleDirectories());
       $this->discovery = new ContainerDerivativeDiscoveryDecorator($this->discovery);
     }
     return $this->discovery;

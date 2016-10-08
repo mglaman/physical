@@ -7,13 +7,14 @@
 
 namespace Drupal\physical\Tests\Unit;
 
-use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\physical\Physical\Weight;
+use Drupal\physical\Weight;
 use Drupal\Tests\UnitTestCase;
-use Drupal\physical\Unit;
+use Drupal\physical\Plugin\Physical\Unit;
 
 /**
- * @coversDefaultClass \Drupal\physical\Physical\Weight
+ * Tests Weight units.
+ *
+ * @coversDefaultClass \Drupal\physical\Weight
  * @group physical
  */
 class WeightTest extends UnitTestCase {
@@ -21,7 +22,7 @@ class WeightTest extends UnitTestCase {
   /**
    * The mock unit plugin manager.
    *
-   * @var \Drupal\physical\UnitManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\physical\UnitManager|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $unitPluginManager;
 
@@ -57,24 +58,21 @@ class WeightTest extends UnitTestCase {
       ],
     ];
 
-    $this->unitPluginManager = $this->getMock('\Drupal\physical\UnitManagerInterface');
+    $this->unitPluginManager = $this->getMockBuilder('\Drupal\physical\UnitManager')
+      ->disableOriginalConstructor()->getMock();
     $this->unitPluginManager->expects($this->any())
-                            ->method('getDefinitions')
-                            ->willReturn($definitions);
+      ->method('getDefinitions')
+      ->willReturn($definitions);
     $this->unitPluginManager->expects($this->at(1))
       ->method('createInstance')
       ->with('pounds', $this->anything())
-      ->willReturn(new Unit(array(), 'pounds', $definitions['pounds']));
+      ->willReturn(new Unit([], 'pounds', $definitions['pounds']));
     $this->unitPluginManager->expects($this->at(2))
       ->method('createInstance')
       ->with('kilograms', $this->anything())
-      ->willReturn(new Unit(array(), 'kilograms', $definitions['kilograms']));
+      ->willReturn(new Unit([], 'kilograms', $definitions['kilograms']));
 
-    $container = new ContainerBuilder();
-    $container->set('plugin.manager.unit', $this->unitPluginManager);
-    \Drupal::setContainer($container);
-
-    $this->weight = new Weight();
+    $this->weight = new Weight($this->unitPluginManager);
   }
 
   /**

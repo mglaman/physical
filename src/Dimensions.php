@@ -1,13 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Dimensions.
- */
+namespace Drupal\physical;
 
-namespace Drupal\physical\Physical;
-
-use Drupal\physical\UnitFactory;
+use Drupal\physical\UnitManager;
 
 /**
  * Class Volume.
@@ -24,9 +19,13 @@ class Dimensions extends Physical {
   protected $defaultUnit = 'm';
 
   /**
-   * {@inheritdoc}
+   * Constructs a new Physical object.
+   *
+   * @param \Drupal\physical\UnitManager $unit_manager
+   *   The unit manager.
    */
-  public function __construct() {
+  public function __construct(UnitManager $unit_manager) {
+    parent::__construct($unit_manager);
     $this->addComponent('length');
     $this->addComponent('width');
     $this->addComponent('height');

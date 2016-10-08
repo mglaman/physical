@@ -5,14 +5,14 @@
  * Contains \Drupal\physical\Unit\Unit.
  */
 
-namespace Drupal\physical;
+namespace Drupal\physical\Plugin\Physical;
 
 use Drupal\Core\Plugin\PluginBase;
 
 /**
  * Class Unit.
  */
-class Unit extends PluginBase implements UnitPluginInterface {
+class Unit extends PluginBase implements UnitInterface {
 
   /**
    * {@inheritdoc}
@@ -25,7 +25,7 @@ class Unit extends PluginBase implements UnitPluginInterface {
    * {@inheritdoc}
    */
   public function getLabel() {
-    return $this->t($this->pluginDefinition['label'], array(), array('context' => 'unit'));
+    return $this->pluginDefinition['label'];
   }
 
   /**

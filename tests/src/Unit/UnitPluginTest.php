@@ -1,42 +1,36 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Tests\Unit\UnitPluginTest.
- */
-
-namespace Drupal\physical\Tests\Unit;
+namespace Drupal\Tests\physical\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\physical\Unit;
-use Drupal\physical\UnitPluginInterface;
+use Drupal\physical\Plugin\Physical\Unit;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * @coversDefaultClass \Drupal\physical\Unit
- * @group physical
+ * Tests the Unit plugin.
  *
- * @todo: Get manager working.
+ * @coversDefaultClass \Drupal\physical\Plugin\Physical\Unit
+ * @group physical
  */
 class UnitPluginTest extends UnitTestCase {
 
   /**
    * The mock unit plugin manager.
    *
-   * @var \Drupal\physical\UnitManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\physical\UnitManager|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $unitPluginManager;
 
   /**
    * Pounds unit.
    *
-   * @var UnitPluginInterface
+   * @var \Drupal\physical\Plugin\Physical\UnitInterface
    */
   protected $unitLb;
   /**
    * Ounces unit.
    *
-   * @var UnitPluginInterface
+   * @var \Drupal\physical\Plugin\Physical\UnitInterface
    */
   protected $unitOz;
 
@@ -65,17 +59,18 @@ class UnitPluginTest extends UnitTestCase {
       ],
     ];
 
-    $this->unitPluginManager = $this->getMock('\Drupal\physical\UnitManagerInterface');
+    $this->unitPluginManager = $this->getMockBuilder('\Drupal\physical\UnitManager')
+      ->disableOriginalConstructor()->getMock();
     $this->unitPluginManager->expects($this->any())
-                        ->method('getDefinitions')
-                        ->willReturn($definitions);
+      ->method('getDefinitions')
+      ->willReturn($definitions);
 
     $container = new ContainerBuilder();
     $container->set('plugin.manager.unit', $this->unitPluginManager);
     \Drupal::setContainer($container);
 
-    $this->unitLb = new Unit(array(), 'pound', $definitions['pounds']);
-    $this->unitOz = new Unit(array(), 'ounces', $definitions['ounces']);
+    $this->unitLb = new Unit([], 'pound', $definitions['pounds']);
+    $this->unitOz = new Unit([], 'ounces', $definitions['ounces']);
   }
 
   /**
