@@ -58,11 +58,14 @@ class DimensionsItemTest extends EntityKernelTestBase {
     $entity->save();
     $entity = $this->reloadEntity($entity);
 
-    /** @var \Drupal\physical\Plugin\Field\FieldType\PhysicalItemInterface $physical_item */
+    /** @var \Drupal\physical\Plugin\Field\FieldType\PhysicalDimensionsItem $physical_item */
     $physical_item = $entity->get('test_dimensions')->first();
     $this->assertEquals(5, $physical_item->get('length')->getValue());
     $this->assertEquals(7, $physical_item->get('width')->getValue());
     $this->assertEquals(2, $physical_item->get('height')->getValue());
+    $this->assertEquals(70, $physical_item->getVolume());
+    $converted = $physical_item->convert('cm³');
+    $this->assertEquals(1778000.0, $converted);
   }
 
 }

@@ -91,8 +91,26 @@ class PhysicalDimensionsItem extends FieldItemBase implements PhysicalItemInterf
    * {@inheritdoc}
    */
   public function getUnit() {
-    $manager = \Drupal::getContainer()->get('physical.weight');
+    $manager = \Drupal::getContainer()->get('plugin.manager.unit');
     return $manager->getUnit($this->get('unit')->getValue());
+  }
+
+  /**
+   * Get the calculated volume.
+   *
+   * @return int|float
+   *   The volume.
+   */
+  public function getVolume() {
+    return $this->get('length')->getValue() * $this->get('width')->getValue() * $this->get('height')->getValue();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function convert($to) {
+    $manager = \Drupal::getContainer()->get('plugin.manager.unit');
+    return $manager->convertValue($this->getVolume(), $this->get('unit')->getValue(), $to);
   }
 
 }

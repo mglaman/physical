@@ -17,4 +17,15 @@ interface PhysicalItemInterface extends FieldItemInterface {
    */
   public function getUnit();
 
+  /**
+   * Convert the value to another unit.
+   *
+   * @param string $to
+   *   The physical unit.
+   *
+   * @return int|float
+   *   The converted amount.
+   */
+  public function convert($to);
+
 }

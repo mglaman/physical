@@ -70,7 +70,7 @@ class UnitManager extends DefaultPluginManager implements UnitManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getByType($type) {
+  public function getUnitsForType($type) {
     $units = [];
     foreach ($this->getDefinitions() as $id => $plugin) {
       if ($plugin['type'] == $type) {
@@ -78,6 +78,33 @@ class UnitManager extends DefaultPluginManager implements UnitManagerInterface {
       }
     }
     return $units;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUnit($unit) {
+    foreach ($this->getDefinitions() as $plugin_id => $definition) {
+      if ($definition['unit'] == $unit) {
+        return $this->createInstance($plugin_id);
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function convertValue($value, $from, $to) {
+    /** @var \Drupal\physical\Plugin\Physical\UnitInterface $from_unit */
+    if (!$from_unit = $this->getUnit($from)) {
+      throw new PluginException("Invalid physical unit $from");
+    }
+    /** @var \Drupal\physical\Plugin\Physical\UnitInterface $to_unit */
+    if (!$to_unit = $this->getUnit($to)) {
+      throw new PluginException("Invalid physical unit $to");
+    }
+
+    return $to_unit->round($to_unit->fromBase($from_unit->toBase($value)));
   }
 
 }

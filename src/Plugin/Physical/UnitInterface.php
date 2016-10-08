@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\physical\Unit\UnitInterface.
- */
-
 namespace Drupal\physical\Plugin\Physical;
 
 /**

@@ -119,7 +119,7 @@ abstract class PhysicalWidgetBase extends WidgetBase implements ContainerFactory
    */
   protected function unitOptions() {
     $options = [];
-    foreach ($this->unitManager->getByType($this->pluginDefinition['measurement']) as $key => $unit) {
+    foreach ($this->unitManager->getUnitsForType($this->pluginDefinition['measurement']) as $key => $unit) {
       $options[$key] = $unit->getLabel();
     }
     return $options;

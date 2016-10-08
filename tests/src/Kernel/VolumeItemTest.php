@@ -61,8 +61,8 @@ class VolumetItemTest extends EntityKernelTestBase {
     $unit = $physical_item->getUnit();
     $volume = $physical_item->get('volume')->getValue();
     $this->assertEquals(10, $unit->round($volume));
-    // @todo ??
-    $this->assertEquals(0.28316999999999998, $unit->round($unit->toBase($volume)));
+    $converted = $physical_item->convert('in³');
+    $this->assertEquals(17280.09362, $converted);
   }
 
 }

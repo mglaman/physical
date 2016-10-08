@@ -81,8 +81,16 @@ class PhysicalWeightItem extends FieldItemBase implements PhysicalItemInterface 
    * {@inheritdoc}
    */
   public function getUnit() {
-    $manager = \Drupal::getContainer()->get('physical.weight');
+    $manager = \Drupal::getContainer()->get('plugin.manager.unit');
     return $manager->getUnit($this->get('unit')->getValue());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function convert($to) {
+    $manager = \Drupal::getContainer()->get('plugin.manager.unit');
+    return $manager->convertValue($this->get('weight')->getValue(), $this->get('unit')->getValue(), $to);
   }
 
 }

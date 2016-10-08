@@ -61,7 +61,8 @@ class WeightItemTest extends EntityKernelTestBase {
     $unit = $physical_item->getUnit();
     $weight = $physical_item->get('weight')->getValue();
     $this->assertEquals(10, $unit->round($weight));
-    $this->assertEquals(4.53592, $unit->round($unit->toBase($weight)));
+    $converted = $physical_item->convert('kg');
+    $this->assertEquals(4.53592, $converted);
   }
 
 }
